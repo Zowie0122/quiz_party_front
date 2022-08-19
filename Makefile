@@ -25,7 +25,7 @@ reset:
 	down rebuild
 
 vue-root: 
-	docker exec -it issue_tracker_frontend /bin/ash
+	docker exec -it quiz_party_frontend /bin/ash
 
 ash-vue: 
-	docker exec -it --user=app issue_tracker_frontend /bin/ash
+	docker exec -it --user=app quiz_party_frontend /bin/ash

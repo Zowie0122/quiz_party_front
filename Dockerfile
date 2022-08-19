@@ -11,4 +11,4 @@ COPY package.json .
 
 RUN npm install
 
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "start"]
