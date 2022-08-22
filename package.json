@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "npm-run-all -p serve tailwindcss",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --mode development",
+    "build": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "tailwindcss": "npx tailwindcss -i ./libs/tailwindcss/tailwind.css -o ./src/assets/css/tailwind.css --watch"
   },
@@ -27,6 +27,8 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^9.3.0",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwindcss": "^3.1.8"
   },
   "eslintConfig": {
