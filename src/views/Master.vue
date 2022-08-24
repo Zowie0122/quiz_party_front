@@ -290,6 +290,7 @@ export default {
     },
 
     handleDeleteOption(optionIndex) {
+      if (this.quiz.bingo === optionIndex) this.quiz.bingo = null;
       this.quiz.options.splice(optionIndex - 1, 1);
       while (this.quiz.options.length < 2) {
         this.quiz.options.push('');
