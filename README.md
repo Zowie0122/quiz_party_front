@@ -28,7 +28,7 @@ A quiz app that allows multi game rooms and multi players within a game room at 
 
 ## How to start
 
-1. This project requires this [repo](https://github.com/Zowie0122/quiz_party_api) which is the API, please follow the instruction to start the backend server first.
+1. This project requires this [repo](https://github.com/Zowie0122/quiz_party_api) which is the API, please follow the [instruction](https://github.com/Zowie0122/quiz_party_api/blob/main/README.md) to start the backend server first.
 
 2. Copy the environment variable to `.env` from `.env.example` by
 
@@ -38,7 +38,7 @@ cat .env.example >> .env
 
 3. Please install [Docker](https://www.docker.com/products/docker-desktop/) if you hasn't, don't worry, it is still free 😆 !
 
-4. Make sure your Docker is up and running and host machine and docker environment are all available for both ports: `8080`(frontend) and `7000`(backend). Then run
+4. Make sure your Docker is up and running and host machine and docker environment are all available for port: `8080`. Then run
 
 ```
 make restart
