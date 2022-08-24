@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col items-center justify-center space-y-4">
+  <div
+    class="sx:min-w-fit flex min-h-fit max-w-2xl flex-col items-center justify-center space-y-4 px-2 py-4 md:space-y-8 md:px-4 md:py-8"
+  >
     <template v-if="serverErr">
       <app-message :content="serverErr" />
       <app-button @btn_click="redirectToHome">Back</app-button>
@@ -8,38 +10,48 @@
     <template v-else>
       <app-message :content="`${master} is hosting`" class="animate-pulse" />
 
-      <quiz-container v-if="quiz.question">
+      <app-container v-if="quiz.question" class="!divide-none p-2 md:p-4">
         <app-message :content="quiz.question" />
-        <labed-item
-          v-for="(option, i) in quiz.options"
-          :key="i"
-          :label="alphaLabel[i]"
-          @label_click="handleSelect(i)"
-          :highlighted="quiz.bingo === i"
-          :selected="answer === i"
-          :disabled="showBingo"
+
+        <div
+          class="flex flex-row flex-wrap items-center justify-around space-y-2"
         >
-          <div class="flex-1">
-            <app-input
-              type="text"
-              readonly
-              v-model.trim="quiz.options[i]"
-              size="small"
-            />
-          </div>
-        </labed-item>
+          <labed-item
+            v-for="(option, i) in quiz.options"
+            :key="i"
+            :label="alphaLabel[i]"
+            @label_click="handleSelect(i)"
+            :highlighted="quiz.bingo === i"
+            :selected="answer === i"
+            :disabled="showBingo"
+          >
+            <div class="flex-1">
+              <app-input
+                type="text"
+                readonly
+                v-model.trim="quiz.options[i]"
+                size="small"
+              />
+            </div>
+          </labed-item>
+        </div>
         <Counter v-if="isOngoing" :timeLeft="counter" />
-      </quiz-container>
+      </app-container>
 
-      <Players :players="players" :bingo="quiz.bingo" />
+      <app-container class="w-full">
+        <Players
+          :players="players"
+          :bingo="quiz.bingo"
+          class="p-1 md:px-4 md:py-2"
+        />
+
+        <div class="flex w-full items-center justify-center p-4">
+          <app-button @btn_click="handleDisconnect" size="small"
+            >Leave</app-button
+          >
+        </div>
+      </app-container>
     </template>
-
-    <app-button
-      @btn_click="handleDisconnect"
-      class="self-end justify-self-end"
-      size="small"
-      >Leave</app-button
-    >
   </div>
 </template>
 
@@ -51,7 +63,7 @@ import AppButton from '../components/Button.vue';
 import AppInput from '@/components/Input.vue';
 import LabedItem from '@/components/LabedItem.vue';
 import Counter from '@/components/Counter.vue';
-import QuizContainer from '@/components/QuizContainer.vue';
+import AppContainer from '@/components/Container';
 import Players from '@/components/Players.vue';
 
 import { alphaLabel } from '../constants.js';
@@ -66,7 +78,7 @@ export default {
     AppInput,
     LabedItem,
     Counter,
-    QuizContainer,
+    AppContainer,
     Players,
   },
 

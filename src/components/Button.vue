@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="inline-flex items-center rounded-lg border border-gray-200 bg-white text-center text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100"
+    class="inline-flex items-center rounded-lg border border-leaf bg-milk text-center text-leaf duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-leaf-dark"
     :class="[...sizeClass, `${disabled && 'text-gray-300'} `]"
     @click="$emit('btn_click')"
     :disabled="disabled"
@@ -28,7 +28,15 @@ export default {
   computed: {
     sizeClass() {
       if (this.size === 'small') {
-        return ['text-sm', 'px-4', 'py-2', 'font-medium'];
+        return [
+          'text-sm',
+          'px-4',
+          'py-2',
+          'md:px-8',
+          'md:py-4',
+          'md:text-base',
+          'font-medium',
+        ];
       } else if (this.size === 'large') {
         return [
           '!px-16',

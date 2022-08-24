@@ -1,10 +1,11 @@
 <template>
-  <div class="flex flex-row items-center justify-center space-x-2">
+  <div class="flex flex-row items-stretch justify-center space-x-2">
     <button
-      class="flex-none rounded-lg bg-pink-600 p-2 text-center text-sm font-medium text-white md:p-4 md:text-xl"
+      class="flex-none rounded-lg border border-cherry bg-sakura p-2 text-center text-sm font-medium text-leaf-dark md:border-2 md:text-xl"
       :class="[
         `${highlighted && `bg-yellow-300`} `,
         `${selected && `bg-sky-300`} `,
+        ...labelStyle,
       ]"
       @click="$emit('label_click')"
       :disabled="disabled"
@@ -12,7 +13,7 @@
       {{ label }}
     </button>
 
-    <slot class="px-2 py-1 md:px-4 md:py-2"></slot>
+    <slot class="h-full"></slot>
   </div>
 </template>
 
@@ -40,6 +41,12 @@ export default {
     disabled: {
       type: Boolean,
       default: true,
+      required: false,
+    },
+
+    labelStyle: {
+      type: Array,
+      default: () => [],
       required: false,
     },
   },

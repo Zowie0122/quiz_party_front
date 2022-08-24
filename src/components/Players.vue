@@ -1,25 +1,31 @@
 <template>
-  <div v-if="players.length > 0" class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+  <div
+    v-if="players.length > 0"
+    class="items-around flex flex-wrap items-center justify-center gap-2 space-x-2 md:space-x-4"
+  >
     <div
       v-for="(player, i) in players"
       :key="i"
-      class="flex items-center justify-start rounded-lg bg-black/20 px-2 py-1 text-white shadow-lg"
+      class="grid grid-flow-col grid-rows-1 content-center rounded-lg border border-cherry bg-white text-cherry shadow-lg"
     >
       <div
-        class="mr-2 flex h-10 w-10 flex-none items-center justify-center rounded-lg text-xl font-bold md:text-2xl"
+        class="col-span-2 flex items-center justify-center break-all p-2 text-sm font-medium md:text-lg"
+        :class="[`${bingo && player.answer === bingo && 'animate-pulse'} `]"
+      >
+        {{ player.name }}
+      </div>
+      <div
+        class="col-span-2 row-span-2 flex items-center justify-center rounded-bl-lg font-bold text-leaf-dark/80 md:text-lg"
         :class="getPlayerColor(i)"
       >
         {{ alphaLabel[player.answer] }}
       </div>
 
-      <div class="flex flex-col space-y-1">
-        <div
-          class="break-all text-sm font-medium md:text-lg"
-          :class="[`${bingo && player.answer === bingo && 'animate-pulse'} `]"
-        >
-          {{ player.name }}
-        </div>
-        <div class="font-bold md:text-lg">{{ player.winCounts }}</div>
+      <div
+        class="row-span-3 flex w-10 items-center justify-center rounded-r-lg text-xl font-bold text-leaf-dark/80 md:text-2xl"
+        :class="getPlayerColor(i)"
+      >
+        {{ player.winCounts }}
       </div>
     </div>
   </div>
@@ -46,13 +52,11 @@ export default {
 
   methods: {
     getPlayerColor(i) {
-      return ['bg-gradient-to-br'].concat(
-        tailwindColors[
-          i > tailwindColors.length - 1
-            ? Math.round(i / tailwindColors.length)
-            : i
-        ]
-      );
+      return tailwindColors[
+        i > tailwindColors.length - 1
+          ? Math.round(i / tailwindColors.length)
+          : i
+      ];
     },
   },
 };

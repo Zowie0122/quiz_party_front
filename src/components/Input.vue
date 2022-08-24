@@ -68,11 +68,12 @@ export default {
         'inline-flex',
         'rounded-lg',
         'border',
-        'border-gray-300',
-        'bg-gray-50',
-        'text-gray-900',
+        'border-leaf',
+        'bg-cloudy/30',
+        'text-leaf-dark',
         'focus:border-white',
         'focus:ring-white',
+        'font-roboto',
       ];
       if (this.size === 'small') {
         return commonClass.concat([

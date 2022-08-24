@@ -8,151 +8,168 @@
     </template>
 
     <template v-else>
-      <div
-        class="flex flex-col items-center justify-center space-y-2 rounded-lg bg-white p-2 text-sm md:p-4 md:text-lg"
-      >
-        Copy game code and invite players
-        <app-button
-          size="small"
-          class="!md:text-base !text-xs focus:text-teal-500"
-          @btn_click="handleClipboard"
-          >{{ gameCode }}</app-button
-        >
-      </div>
-
-      <quiz-container>
+      <app-container>
         <div
-          v-if="!isOngoing"
-          class="flex items-center justify-center space-x-4"
+          class="flex w-full flex-col items-center justify-center space-y-4 px-1 font-roboto text-white"
         >
+          Copy game code and invite players
           <app-button
-            @btn_click="handleChangeQMode('custom')"
-            class="basis-1/2"
             size="small"
-            >Custom</app-button
-          >
-          <app-button
-            @btn_click="handleChangeQMode('random')"
-            class="basis-1/2"
-            size="small"
-            >Random</app-button
+            class="!md:text-lg !text-xs focus:text-teal-500"
+            @btn_click="handleClipboard"
+            >{{ gameCode }}</app-button
           >
         </div>
+
         <div
-          class="flex flex-row flex-wrap items-center justify-center space-x-2 space-y-2"
+          class="flex flex-col items-center justify-center space-y-2 p-2 md:space-y-4 md:p-4"
         >
-          <app-input
-            isTextarea
-            :readonly="questionMode === 'random' || isOngoing"
-            placeholder="Question goes here"
-            v-model.trim="quiz.question"
-            class="basis-full"
-            size="small"
-          />
-
-          <labed-item
-            v-for="(option, i) in quiz.options"
-            :key="i"
-            :label="alphaLabel[i]"
-            :highlighted="quiz.bingo === i"
-            class="basis-full lg:basis-1/2"
+          <div
+            v-if="!isOngoing"
+            class="flex w-full items-center justify-around"
           >
-            <div class="relative">
-              <app-input
-                type="text"
-                :readonly="questionMode === 'random' || isOngoing"
-                placeholder="option"
-                v-model.trim="quiz.options[i]"
-                size="small"
-              />
+            <app-button @btn_click="handleChangeQMode('custom')" size="small"
+              >Custom</app-button
+            >
+            <app-button @btn_click="handleChangeQMode('random')" size="small"
+              >Random</app-button
+            >
+          </div>
+          <div
+            class="flex flex-row flex-wrap items-center justify-around space-y-2"
+          >
+            <app-input
+              isTextarea
+              :readonly="questionMode === 'random' || isOngoing"
+              placeholder="Question goes here"
+              v-model.trim="quiz.question"
+              class="basis-full"
+              size="small"
+            />
 
-              <div
-                class="absolute inset-y-0 right-1 flex h-full items-center justify-center"
-              >
-                <icon-button
-                  v-if="
-                    i === this.quiz.options.length - 1 &&
-                    quiz.options.length < maxOptions
-                  "
-                  @icon_click="handleAddOption"
-                  class="h-2/3"
+            <labed-item
+              v-for="(option, i) in quiz.options"
+              :key="i"
+              :label="alphaLabel[i]"
+              :highlighted="quiz.bingo === i"
+            >
+              <div class="relative">
+                <app-input
+                  type="text"
+                  :readonly="questionMode === 'random' || isOngoing"
+                  placeholder="option"
+                  v-model.trim="quiz.options[i]"
+                  size="small"
+                />
+
+                <div
+                  class="absolute inset-y-0 right-1 flex h-full items-center justify-center space-x-0.5 md:space-x-1"
                 >
-                  <add-icon class="h-full"
-                /></icon-button>
+                  <icon-button
+                    v-if="
+                      i === this.quiz.options.length - 1 &&
+                      quiz.options.length < maxOptions
+                    "
+                    @icon_click="handleAddOption"
+                    class="transparent h-2/3 rounded-sm text-leaf"
+                  >
+                    <add-icon class="h-full"
+                  /></icon-button>
 
-                <icon-button @icon_click="handleDeleteOption" class="h-2/3">
-                  <delete-icon class="h-full"
-                /></icon-button>
+                  <icon-button
+                    @icon_click="handleDeleteOption"
+                    class="transparent h-2/3 rounded-sm text-leaf"
+                  >
+                    <delete-icon class="h-full"
+                  /></icon-button>
+                </div>
               </div>
+            </labed-item>
+
+            <div
+              v-if="!isOngoing"
+              class="flex w-full flex-row items-center justify-center space-x-2 md:space-x-4"
+            >
+              <labed-item
+                v-if="questionMode === 'custom'"
+                label="Bingo"
+                class="!space-x-1"
+                :labelStyle="['!bg-white', '!text-leaf-dark', 'border-none']"
+              >
+                <select
+                  v-model="quiz.bingo"
+                  class="block w-16 rounded-lg border border-leaf bg-cloudy p-2 text-sm text-leaf-dark focus:ring-white"
+                >
+                  <option
+                    v-for="(option, i) in quiz.options"
+                    :key="i"
+                    :value="i"
+                  >
+                    {{ alphaLabel[i] }}
+                  </option>
+                </select>
+              </labed-item>
+
+              <labed-item
+                label="Timer"
+                class="!space-x-1"
+                :labelStyle="['!bg-white', '!text-leaf-dark', 'border-none']"
+              >
+                <select
+                  v-model="timeLimit"
+                  class="block w-16 rounded-lg border border-leaf bg-cloudy p-2 text-sm text-leaf-dark focus:ring-white"
+                >
+                  <option
+                    v-for="(duration, i) in durations"
+                    :key="i"
+                    :value="duration"
+                  >
+                    {{ `${duration}s` }}
+                  </option>
+                </select>
+              </labed-item>
             </div>
-          </labed-item>
+          </div>
 
           <div
             v-if="!isOngoing"
-            class="flex w-full flex-row items-center justify-center space-x-4"
+            class="flex w-full items-center justify-around"
           >
-            <labed-item v-if="questionMode === 'custom'" label="Answer">
-              <select
-                v-model="quiz.bingo"
-                class="block w-16 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              >
-                <option v-for="(option, i) in quiz.options" :key="i" :value="i">
-                  {{ alphaLabel[i] }}
-                </option>
-              </select>
-            </labed-item>
+            <app-button
+              :disabled="!!validationErr"
+              @btn_click="handleStart"
+              size="small"
+              >Start</app-button
+            >
 
-            <labed-item label="Timer">
-              <select
-                v-model="timeLimit"
-                class="block w-20 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              >
-                <option
-                  v-for="(duration, i) in durations"
-                  :key="i"
-                  :value="duration"
-                >
-                  {{ `${duration}s` }}
-                </option>
-              </select>
-            </labed-item>
+            <app-button
+              v-if="questionMode === 'custom'"
+              @btn_click="handleResetQuiz"
+              size="small"
+              >Clear</app-button
+            >
           </div>
-        </div>
 
-        <div v-if="!isOngoing" class="flex flex-row space-x-4">
-          <app-button
-            :disabled="!!validationErr"
-            @btn_click="handleStart"
-            size="small"
-            >Start</app-button
+          <Counter v-else :timeLeft="counter" />
+        </div>
+      </app-container>
+
+      <app-container class="w-full">
+        <Players :players="players" :bingo="quiz.bingo" />
+
+        <div class="flex w-full items-center justify-around py-2">
+          <app-button @btn_click="handleDisconnect" size="small"
+            >Leave</app-button
           >
 
           <app-button
-            v-if="questionMode === 'custom'"
-            @btn_click="handleResetQuiz"
+            :disabled="isOngoing || !hasDirtyWinCounts"
+            @btn_click="handleResetGame"
             size="small"
-            >Clear</app-button
+            >Reset</app-button
           >
         </div>
-
-        <Counter v-else :timeLeft="counter" />
-      </quiz-container>
-
-      <Players :players="players" :bingo="quiz.bingo" />
-
-      <div class="flex space-x-2 self-end justify-self-end">
-        <app-button @btn_click="handleDisconnect" class="basis-1/2" size="small"
-          >Leave</app-button
-        >
-
-        <app-button
-          :disabled="isOngoing || !hasDirtyWinCounts"
-          @btn_click="handleResetGame"
-          class="basis-1/2"
-          size="small"
-          >Reset</app-button
-        >
-      </div>
+      </app-container>
     </template>
   </div>
 </template>
@@ -166,9 +183,9 @@ import AppButton from '../components/Button.vue';
 import AppInput from '@/components/Input.vue';
 import LabedItem from '@/components/LabedItem.vue';
 import Counter from '@/components/Counter.vue';
-import QuizContainer from '@/components/QuizContainer.vue';
 import Players from '@/components/Players.vue';
 import IconButton from '@/components/buttons/IconButton.vue';
+import AppContainer from '@/components/Container';
 
 import { alphaLabel } from '../constants.js';
 import {
@@ -183,6 +200,7 @@ export default {
   name: 'Master',
 
   components: {
+    AppContainer,
     AddIcon,
     DeleteIcon,
     AppMessage,
@@ -190,7 +208,6 @@ export default {
     AppInput,
     LabedItem,
     Counter,
-    QuizContainer,
     Players,
     IconButton,
   },
